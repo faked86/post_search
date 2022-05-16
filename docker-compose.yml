@@ -10,7 +10,7 @@ services:
     depends_on:
       - database
       - elasticsearch
-    restart: on-failure
+    restart: always
 
   database:
     container_name: post_search_db
