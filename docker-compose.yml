@@ -1,15 +1,16 @@
 version: "3.8"
 
 services:
-#  quiz_app:
-#    container_name: quiz_app
-#    build:
-#      context: .
-#    ports:
-#      - "8000:5000"
-#    depends_on:
-#      - database
-#      - elasticsearch1
+  post_search:
+    container_name: post_search
+    build:
+      context: .
+    ports:
+      - "8000:5000"
+    depends_on:
+      - database
+      - elasticsearch
+    restart: on-failure
 
   database:
     container_name: post_search_db
@@ -22,7 +23,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
 
   elasticsearch:
     image: elasticsearch:7.17.3
@@ -30,6 +31,10 @@ services:
     environment:
         - discovery.type=single-node
     volumes:
-        - ./esdata:/usr/share/elasticsearch/data
+        - esdata:/usr/share/elasticsearch/data
     ports:
         - "9200:9200"
+
+volumes:
+  db:
+  esdata:
