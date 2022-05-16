@@ -9,7 +9,7 @@ def search():
     args = request.args
     query = args.get("query")
     if query is None:
-        return "Need 'query' parameter in GET method", 400
+        return jsonify("Need 'query' parameter in GET method"), 400
 
     resp = es.search(index="posts", size=20, query={"match": {
         "text": query
@@ -36,15 +36,18 @@ def search():
 def delete(post_id):
     post = Post.query.get(post_id)
     try:
-        es.delete_by_query(index='posts', body={"query": {"match": {
-            "id": post.id
-        }}})
+        es.delete_by_query(index='posts', body={
+            "query": {"match": {
+                "id": post.id
+                }
+            }
+        })
         db.session.delete(post)
         db.session.commit()
 
     except Exception as err:
         print(err)
         db.session.rollback()
-        return "Something went wrong"
+        return jsonify("Something went wrong"), 500
 
-    return "Post was successfully deleted"
+    return jsonify("Post was successfully deleted"), 200
