@@ -25,7 +25,7 @@
         ],
         "responses": {
           "200": {
-            "description": "A list of 20 post"
+            "description": "A list of 20 post sorted by created_date"
           },
           "400": {
             "description": "Need 'query' parameter in GET method"
