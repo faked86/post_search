@@ -5,6 +5,8 @@ from search import db
 from search.models import Post
 
 
+db.drop_all()
+db.create_all()
 with open("posts.csv", encoding='utf-8') as f:
     csv_reader = csv.reader(f, delimiter=',', quotechar='"')
     next(csv_reader)
