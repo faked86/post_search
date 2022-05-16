@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+#  quiz_app:
+#    container_name: quiz_app
+#    build:
+#      context: .
+#    ports:
+#      - "8000:5000"
+#    depends_on:
+#      - database
+#      - elasticsearch1
+
+  database:
+    container_name: post_search_db
+    image: postgres:12.8
+    restart: always
+    environment:
+      - POSTGRES_USER=pg
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=post_search
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+
+  elasticsearch:
+    image: elasticsearch:7.17.3
+    container_name: post_search_elasticsearch
+    environment:
+        - discovery.type=single-node
+    volumes:
+        - ./esdata:/usr/share/elasticsearch/data
+    ports:
+        - "9200:9200"
